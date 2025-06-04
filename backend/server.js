@@ -38,6 +38,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://osdatum.vercel.app",
+      "https://osdatum-app-git-test-osdatums-projects.vercel.app",
       "https://*.vercel.app",
     ],
     credentials: true,
