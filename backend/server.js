@@ -41,7 +41,6 @@ app.use(cors({
   credentials: true
 }));
 
-app.options('*', cors());
 
 app.use(express.json());
 
@@ -50,6 +49,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", authenticateToken, userRoutes); // Apply authenticateToken to all user routes
 app.use("/api/auth/firebase", firebaseAuthRoutes);
 app.use("/api/subscription", subscriptionRoutes);
+
 
 // REMOVE TEMPORARY Endpoint to manually create purchase data in Firestore
 // REMOVE THIS IN PRODUCTION
@@ -73,3 +73,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
