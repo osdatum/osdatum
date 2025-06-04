@@ -35,13 +35,8 @@ router.post('/', async (req, res) => {
     // Get Firestore instance
     const db = admin.firestore();
     const usersRef = db.collection('users');
-
-    console.log(usersRef)
-
     // Check if user exists in Firestore
     const userDoc = await usersRef.where('email', '==', email).get();
-
-    console.log(userDoc)
 
     if (userDoc.empty) {
       if (mode === 'register') {
@@ -69,8 +64,6 @@ router.post('/', async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    console.log(token)
-    
     console.log('Signed custom JWT with userId:', uid);
 
     res.json({ 
