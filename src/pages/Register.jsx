@@ -10,97 +10,99 @@ export default function Register() {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setError('');
-    try {
-      // Buat user baru di Firebase
-      const result = await createUserWithEmailAndPassword(auth, email, password);
-      // Update displayName di Firebase Auth
-      await updateProfile(result.user, { displayName: name });
-      // Ambil idToken
-      const idToken = await result.user.getIdToken();
-      // Kirim ke backend untuk sinkronisasi user
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/firebase`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken, mode: 'register' }),
-      });
-      const data = await response.json();
-      if (data.token) {
-        localStorage.setItem('token', data.token);
+  // const handleRegister = async (e) => {
+  //   e.preventDefault();
+  //   setError('');
+  //   try {
+  //     // Buat user baru di Firebase
+  //     const result = await createUserWithEmailAndPassword(auth, email, password);
+  //     // Update displayName di Firebase Auth
+  //     await updateProfile(result.user, { displayName: name });
+  //     // Ambil idToken
+  //     const idToken = await result.user.getIdToken();
+  //     // Kirim ke backend untuk sinkronisasi user
+  //     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/firebase`, {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ idToken, mode: 'register' }),
+  //     });
+  //     const data = await response.json();
+  //     if (data.token) {
+  //       localStorage.setItem('token', data.token);
         
-        // Get photo URL from multiple possible sources
-        let photoURL = null;
-        if (result.user.photoURL) {
-          photoURL = result.user.photoURL;
-        } else if (result.user.providerData && result.user.providerData.length > 0) {
-          // Try to get photo URL from provider data
-          const provider = result.user.providerData[0];
-          if (provider.photoURL) {
-            photoURL = provider.photoURL;
-          }
-        }
+  //       // Get photo URL from multiple possible sources
+  //       let photoURL = null;
+  //       if (result.user.photoURL) {
+  //         photoURL = result.user.photoURL;
+  //       } else if (result.user.providerData && result.user.providerData.length > 0) {
+  //         // Try to get photo URL from provider data
+  //         const provider = result.user.providerData[0];
+  //         if (provider.photoURL) {
+  //           photoURL = provider.photoURL;
+  //         }
+  //       }
 
-        // Log untuk debugging
-        console.log('User data from Firebase:', {
-          displayName: result.user.displayName,
-          email: result.user.email,
-          photoURL: photoURL,
-          providerData: result.user.providerData,
-          rawUser: result.user
-        });
+  //       // Log untuk debugging
+  //       console.log('User data from Firebase:', {
+  //         displayName: result.user.displayName,
+  //         email: result.user.email,
+  //         photoURL: photoURL,
+  //         providerData: result.user.providerData,
+  //         rawUser: result.user
+  //       });
 
-        const userData = {
-          name: name,
-          email: email,
-          photoURL: photoURL
-        };
+  //       const userData = {
+  //         name: name,
+  //         email: email,
+  //         photoURL: photoURL
+  //       };
 
-        console.log('Saving user data to localStorage:', userData);
-        localStorage.setItem('userData', JSON.stringify(userData));
+  //       console.log('Saving user data to localStorage:', userData);
+  //       localStorage.setItem('userData', JSON.stringify(userData));
         
-        // Dispatch auth state change event
-        window.dispatchEvent(new Event('authStateChange'));
-        navigate('/user');
-      } else {
-        setError('Register gagal di backend');
-      }
-    } catch (err) {
-      setError('Register gagal: ' + err.message);
-    }
-  };
+  //       // Dispatch auth state change event
+  //       window.dispatchEvent(new Event('authStateChange'));
+  //       navigate('/user');
+  //     } else {
+  //       setError('Register gagal di backend');
+  //     }
+  //   } catch (err) {
+  //     setError('Register gagal: ' + err.message);
+  //   }
+  // };
 
-  const handleGoogleRegister = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const idToken = await result.user.getIdToken();
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/firebase`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken, mode: 'register' }),
-      });
-      const data = await response.json();
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('userData', JSON.stringify({
-          name: result.user.displayName,
-          email: result.user.email
-        }));
-        navigate('/user');
-      } else {
-        setError('Register gagal di backend');
-      }
-    } catch (err) {
-      setError('Register gagal: ' + err.message);
-    }
-  };
+  // const handleGoogleRegister = async () => {
+  //   try {
+  //     const result = await signInWithPopup(auth, googleProvider);
+  //     const idToken = await result.user.getIdToken();
+  //     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/firebase`, {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ idToken, mode: 'register' }),
+  //     });
+  //     const data = await response.json();
+  //     if (data.token) {
+  //       localStorage.setItem('token', data.token);
+  //       localStorage.setItem('userData', JSON.stringify({
+  //         name: result.user.displayName,
+  //         email: result.user.email
+  //       }));
+  //       navigate('/user');
+  //     } else {
+  //       setError('Register gagal di backend');
+  //     }
+  //   } catch (err) {
+  //     setError('Register gagal: ' + err.message);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold text-blue-900 mb-6">Register OSDATUM</h1>
-        <form onSubmit={handleRegister}>
+        <form 
+        // onSubmit={handleRegister}
+        >
           <input
             type="text"
             placeholder="Full Name"
@@ -134,7 +136,7 @@ export default function Register() {
         </form>
         <div className="text-center mb-2  mt-2">or</div>
         <button
-          onClick={handleGoogleRegister}
+          // onClick={handleGoogleRegister}
           className="w-full bg-white text-gray-700 px-4 py-2 rounded border border-gray-300 hover:bg-gray-50 flex items-center justify-center gap-2"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
