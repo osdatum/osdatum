@@ -33,7 +33,15 @@ dotenv.config();
 const app = express();
 
 // CORS configuration
-app.use(cors())
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'http://osdatum-app.vercel.app'
+  ],
+  credentials: true
+}));
+
+app.options('*', cors());
 
 app.use(express.json());
 
