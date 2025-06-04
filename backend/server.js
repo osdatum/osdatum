@@ -81,10 +81,23 @@ app.use("/api/subscription", subscriptionRoutes);
 // app.get('/api/user/purchased-grids', authenticateToken, async (req, res) => { ... }); // Removed endpoint
 
 // Error handling middleware
+// ...existing code...
 app.use((err, req, res, next) => {
   console.error(err.stack);
+  // Tambahkan header CORS manual jika terjadi error
+  const origin = req.headers.origin;
+  const whitelist = [
+    'http://localhost:5173',
+    'https://osdatum-app.vercel.app',
+    'https://osdatum-app.onrender.com'
+  ];
+  if (origin && whitelist.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
   res.status(500).json({ error: "Something broke!" });
 });
+// ...existing code...
 
 // Start server
 /*global process*/ // Allow process.env
