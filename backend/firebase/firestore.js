@@ -1,7 +1,11 @@
 import admin from 'firebase-admin';
-import serviceAccount from '../../serviceAccountKey.json' with { type: 'json' }; // Added import attribute
+import { readFileSync } from 'fs';
+// import serviceAccount from '../../serviceAccountKey.json' with { type: 'json' }; // Added import attribute
 
 if (!admin.apps.length) {
+  const serviceAccount = JSON.parse(
+    readFileSync('/etc/secrets/serviceAccountKey.json', 'utf8')
+  );
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
     // Anda bisa tambahkan konfigurasi lain seperti databaseURL, storageBucket jika diperlukan

@@ -100,7 +100,9 @@ export default function Register() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold text-blue-900 mb-6">Register OSDATUM</h1>
-        <form onSubmit={handleRegister}>
+        <form 
+        onSubmit={handleRegister}
+        >
           <input
             type="text"
             placeholder="Full Name"
