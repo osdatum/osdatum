@@ -35,7 +35,8 @@ const app = express();
 // CORS configuration
 const whitelist = [
   'http://localhost:5173',
-  'https://osdatum-app.vercel.app'   // ← no trailing slash
+  'https://osdatum-app.vercel.app',
+  'https://osdatum-app.onrender.com'
 ];
 
 const corsOptions = {
@@ -47,6 +48,7 @@ const corsOptions = {
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Access-Control-Allow-Origin'],
   optionsSuccessStatus: 204        // some legacy browsers expect 200-level
 };
 
@@ -54,7 +56,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // 2 – explicit pre-flight fallback (Express 5 needs a named or wrapped star)
-app.options('/(.)', cors(corsOptions));   // ‘(.)’ works, '*' does not
+app.options('/(.)', cors(corsOptions));   // '(.)' works, '*' does not
 
 
 

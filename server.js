@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import admin from 'firebase-admin';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import process from 'process';
 import authRoutes from './src/api/auth.js';
 import userRoutes from './src/api/user.js';
 import firebaseAuthRoutes from './src/routes/firebaseAuth.js';
@@ -55,13 +54,10 @@ app.use(cors({
     const allowedOrigins = [
       'http://localhost:5173',
       'https://osdatum.vercel.app',
-      'https://osdatum-app.vercel.app',
       'https://osdatum-git-main-osdatum.vercel.app',
       'https://osdatum-git-dev-osdatum.vercel.app',
-      'https://osdatum-app.onrender.com',
       /^https:\/\/osdatum.*\.vercel\.app$/,
-      /^https:\/\/.*\.vercel\.app$/,
-      /^https:\/\/.*\.onrender\.com$/
+      /^https:\/\/.*\.vercel\.app$/
     ];
     
     // Allow requests with no origin (like mobile apps or curl requests)
@@ -81,15 +77,14 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
-  exposedHeaders: ['Access-Control-Allow-Origin']
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/user', authenticateToken, userRoutes);
+app.use('/api/user', authenticateToken, userRoutes); // Apply authenticateToken to all user routes
 app.use('/api/auth/firebase', firebaseAuthRoutes);
 app.use('/api/subscription', subscriptionRoutes);
 
@@ -104,16 +99,13 @@ app.use('/api/subscription', subscriptionRoutes);
 // app.get('/api/user/purchased-grids', authenticateToken, async (req, res) => { ... }); // Removed endpoint
 
 // Error handling middleware
-app.use((err, req, res) => {
-  console.error('Error:', err.message);
-  console.error('Stack:', err.stack);
-  res.status(500).json({ 
-    error: 'Something broke!',
-    message: err.message 
-  });
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something broke!' });
 });
 
 // Start server
+/*global process*/ // Allow process.env
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
