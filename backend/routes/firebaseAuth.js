@@ -30,15 +30,18 @@ router.post('/', async (req, res) => {
   console.log('FirebaseAuth POST:', { mode, idToken: !!idToken });
   try {
     const decoded = await admin.auth().verifyIdToken(idToken);
-    console.log(decoded)
     const { email, name, picture, uid } = decoded;
 
     // Get Firestore instance
     const db = admin.firestore();
     const usersRef = db.collection('users');
 
+    console.log(usersRef)
+
     // Check if user exists in Firestore
     const userDoc = await usersRef.where('email', '==', email).get();
+
+    console.log(userDoc)
 
     if (userDoc.empty) {
       if (mode === 'register') {
@@ -65,6 +68,8 @@ router.post('/', async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
+
+    console.log(token)
     
     console.log('Signed custom JWT with userId:', uid);
 
