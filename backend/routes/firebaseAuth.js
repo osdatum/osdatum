@@ -4,11 +4,8 @@ import jwt from 'jsonwebtoken';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-<<<<<<< HEAD:src/routes/firebaseAuth.js
 import process from 'process';
-=======
 import { readFileSync } from 'fs';
->>>>>>> 250757e64c8f46d6c5e2ea93bed0a5e97c487b97:backend/routes/firebaseAuth.js
 
 dotenv.config();
 
@@ -22,13 +19,7 @@ if (!admin.apps.length) {
     readFileSync('/etc/secrets/serviceAccountKey.json', 'utf8')
   );
   admin.initializeApp({
-<<<<<<< HEAD:src/routes/firebaseAuth.js
-    credential: admin.credential.cert(
-      path.join(__dirname, '../../serviceAccountKey.json')
-    ),
-=======
     credential: admin.credential.cert(serviceAccount)
->>>>>>> 250757e64c8f46d6c5e2ea93bed0a5e97c487b97:backend/routes/firebaseAuth.js
   });
 }
 
@@ -92,13 +83,8 @@ router.post('/', async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
-<<<<<<< HEAD:src/routes/firebaseAuth.js
-    
-    console.log('JWT signed successfully for user:', uid);
-=======
 
     console.log('Signed custom JWT with userId:', uid);
->>>>>>> 250757e64c8f46d6c5e2ea93bed0a5e97c487b97:backend/routes/firebaseAuth.js
 
     res.json({ 
       token,
