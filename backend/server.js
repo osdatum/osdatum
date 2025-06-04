@@ -33,17 +33,22 @@ dotenv.config();
 const app = express();
 
 // CORS configuration
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://osdatum.vercel.app",
-      "https://osdatum-app-git-test-osdatums-projects.vercel.app",
-      "https://*.vercel.app",
-    ],
-    credentials: true,
-  })
-);
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://osdatum.vercel.app",
+  "https://osdatum-app-git-test-osdatums-projects.vercel.app"
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
 
 app.use(express.json());
 
