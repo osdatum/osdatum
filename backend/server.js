@@ -34,7 +34,10 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: true,
+  origin: [
+    'http://localhost:5173',
+    'https://osdatum-app.vercel.app'
+  ],
   credentials: true
 }));
 
