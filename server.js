@@ -5,7 +5,7 @@ import admin from 'firebase-admin';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import authRoutes from './src/api/auth.js';
-import userRoutes from './src/api/user.js'; // Contains /access, /purchase/grid, /subscribe
+import userRoutes from './src/api/user.js';
 import firebaseAuthRoutes from './src/routes/firebaseAuth.js';
 import { authenticateToken } from './src/middleware/authMiddleware.js';
 import subscriptionRoutes from './src/routes/subscription.js';
@@ -15,24 +15,33 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 if (!admin.apps.length) {
+  console.log('Initializing Firebase Admin...');
   // Check if we're in production (Vercel)
   if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    console.log('Using Firebase service account from environment variable');
     // Use service account from environment variable
     const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount)
     });
   } else {
+    console.log('Using local service account file');
     // Use local service account file
+    const serviceAccountPath = path.join(__dirname, './serviceAccountKey.json');
+    console.log('Service account path:', serviceAccountPath);
     admin.initializeApp({
-      credential: admin.credential.cert(
-        path.join(__dirname, './serviceAccountKey.json')
-      ),
+      credential: admin.credential.cert(serviceAccountPath)
     });
   }
+  console.log('Firebase Admin initialized successfully');
 }
 
 console.log('OSDATUM Backend Starting...');
+console.log('Environment variables loaded:', {
+  NODE_ENV: process.env.NODE_ENV,
+  JWT_SECRET: process.env.JWT_SECRET ? 'Set' : 'Not Set',
+  PORT: process.env.PORT || 3000
+});
 
 // Load environment variables
 dotenv.config();
@@ -41,12 +50,34 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://osdatum.vercel.app',
-    'https://*.vercel.app'
-  ],
-  credentials: true
+  origin: function(origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'https://osdatum.vercel.app',
+      'https://osdatum-git-main-osdatum.vercel.app',
+      'https://osdatum-git-dev-osdatum.vercel.app',
+      /^https:\/\/osdatum.*\.vercel\.app$/,
+      /^https:\/\/.*\.vercel\.app$/
+    ];
+    
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.some(allowedOrigin => {
+      if (allowedOrigin instanceof RegExp) {
+        return allowedOrigin.test(origin);
+      }
+      return allowedOrigin === origin;
+    })) {
+      callback(null, true);
+    } else {
+      console.log('Blocked by CORS:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());

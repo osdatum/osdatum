@@ -16,7 +16,7 @@ const About = () => {
             </div>
           </section>
 
-          <section className="py-16 px-4">
+          <section className="py-16 px-18">
             <div className="mx-auto grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-3xl font-bold mb-4">About OSDATUM</h2>
@@ -44,7 +44,7 @@ const About = () => {
           </section>
 
           {/* Team Section */}
-          <section className="py-16 px-4">
+          <section className="py-16 px-18">
             {/* Title Section */}
             <div>
               <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center">Our Development Team</h2>
@@ -103,7 +103,7 @@ const About = () => {
           </section>
 
           {/* Supervisor Section */}
-          <section className="py-16 px-4">
+          <section className="py-16 px-18">
             {/* Title Section */}
             <div>
               <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center">Our Supervisor</h2>

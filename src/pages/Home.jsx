@@ -28,7 +28,7 @@ const Home = () => {
 
             {/* Section Features */}
             <div id="features" className="w-full min-h-screen bg-cover bg-top bg-no-repeat relative" style={{backgroundImage: `url(${heroImage})`}}>
-                <div className="container mx-auto px-4 relative z-10 h-full flex items-center py-20 md:py-45">
+                <div className="container mx-auto px-18 relative z-10 h-full flex items-center py-20 md:py-45">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-white">
                         <div className="flex flex-col justify-center">
                             <h2 className="text-5xl md:text-8xl font-bold mb-2 md:mb-4">OUR</h2>
@@ -75,7 +75,7 @@ const Home = () => {
             </div>
 
             {/* About Section */}
-            <div id="about" className="w-full min-h-screen bg-cover bg-no-repeat relative" style={{backgroundImage: `url(${heroImage2})`, backgroundPosition: 'center -100px'}}>
+            <div id="about" className="w-full min-h-screen px-18 bg-cover bg-no-repeat relative" style={{backgroundImage: `url(${heroImage2})`, backgroundPosition: 'center -100px'}}>
                 <div className="container grid grid-cols-1 lg:grid-cols-2 mx-auto px-4 h-full py-20 md:py-50">
                     <div className="text-white flex items-center">
                         <div>

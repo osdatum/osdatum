@@ -241,7 +241,7 @@ const HomeNavbar = () => {
   };
 
   return (
-    <nav className={`navbar fixed w-full transition-all bg-gradient-to-r from-[#0b2a5c] to-[#203b77] z-100 ${scrollActive}`}>
+    <nav className={`navbar fixed w-full transition-all px-18 bg-gradient-to-r from-[#0b2a5c] to-[#203b77] z-100 ${scrollActive}`}>
       <div className="container mx-auto flex justify-between items-center px-3">
         {/* Logo */}
         <Link to="/" className="flex items-center">

@@ -278,10 +278,10 @@ export default function DatumCopyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 px-18">
       <div className="container mx-auto px-4 py-10">
         <div className="flex justify-between items-center mb-8">
-                  <div>
+          <div>
             <h1 className="text-4xl font-bold text-blue-900 mb-2 tracking-wide mt-20">DATUM DATA</h1>
             <div className="text-gray-500 font-semibold">GRID SELECTION</div>
           </div>

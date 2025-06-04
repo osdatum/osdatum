@@ -79,7 +79,7 @@ const InteractiveImageMap = () => {
   };
 
   return (
-    <div className="relative w-full h-[700px] overflow-hidden" style={{maxWidth: '1500px', margin: '0 auto'}}>
+    <div className="relative w-full h-[700px] px-18 overflow-hidden" style={{maxWidth: '1500px', margin: '0 auto'}}>
       <h2 className="text-8xl font-semibold text-right mt-32">OSES-ONWJ</h2>
       <p className="text-base/8 text-right">
         Click on the areas below to explore detailed hydrographic data <br /> 
