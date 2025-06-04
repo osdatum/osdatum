@@ -33,13 +33,30 @@ dotenv.config();
 const app = express();
 
 // CORS configuration
-app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://osdatum-app.vercel.app'
-  ],
-  credentials: true
-}));
+const whitelist = [
+  'http://localhost:5173',
+  'https://osdatum-app.vercel.app'   // ← no trailing slash
+];
+
+const corsOptions = {
+  origin(origin, cb) {
+    // allow requests with no Origin (e.g. mobile apps, curl) as well
+    if (!origin || whitelist.includes(origin)) return cb(null, true);
+    cb(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 204        // some legacy browsers expect 200-level
+};
+
+// 1 – global CORS for every route
+app.use(cors(corsOptions));
+
+// 2 – explicit pre-flight fallback (Express 5 needs a named or wrapped star)
+app.options('(.)', cors(corsOptions));   // ‘(.)’ works, '*' does not
+
+
 
 
 app.use(express.json());
