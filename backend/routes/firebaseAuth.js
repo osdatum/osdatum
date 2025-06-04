@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+import { readFileSync } from 'fs';
 
 dotenv.config();
 
@@ -11,13 +12,16 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+
 if (!admin.apps.length) {
+  const serviceAccount = JSON.parse(
+    readFileSync('/etc/secrets/serviceAccountKey.json', 'utf8')
+  );
   admin.initializeApp({
-    credential: admin.credential.cert(
-      path.join(__dirname, '../../backend/serviceAccountKey.json')
-    ),
+    credential: admin.credential.cert(serviceAccount)
   });
 }
+
 
 const router = express.Router();
 
@@ -26,6 +30,7 @@ router.post('/', async (req, res) => {
   console.log('FirebaseAuth POST:', { mode, idToken: !!idToken });
   try {
     const decoded = await admin.auth().verifyIdToken(idToken);
+    console.log(decoded)
     const { email, name, picture, uid } = decoded;
 
     // Get Firestore instance

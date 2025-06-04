@@ -9,27 +9,20 @@ import userRoutes from "./api/user.js"; // Contains /access, /purchase/grid, /su
 import firebaseAuthRoutes from "./routes/firebaseAuth.js";
 import { authenticateToken } from "./middleware/authMiddleware.js";
 import subscriptionRoutes from "./routes/subscription.js";
+import { readFileSync } from 'fs';
 
 // Initialize Firebase Admin
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 if (!admin.apps.length) {
-  // Check if we're in production (Vercel)
-  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-    // Use service account from environment variable
-    const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-    });
-  } else {
-    // Use local service account file
-    admin.initializeApp({
-      credential: admin.credential.cert(
-        path.join(__dirname, "./serviceAccountKey.json")
-      ),
-    });
-  }
+  const serviceAccount = JSON.parse(
+    readFileSync('/etc/secrets/serviceAccountKey.json', 'utf8')
+  );
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+
 }
 
 console.log("OSDATUM Backend Starting...");

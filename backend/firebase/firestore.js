@@ -5,7 +5,7 @@ import { readFileSync } from 'fs';
 if (!admin.apps.length) {
   const serviceAccount = JSON.parse(
     readFileSync('/etc/secrets/serviceAccountKey.json', 'utf8')
-);
+  );
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
     // Anda bisa tambahkan konfigurasi lain seperti databaseURL, storageBucket jika diperlukan
