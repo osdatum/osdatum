@@ -54,7 +54,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // 2 – explicit pre-flight fallback (Express 5 needs a named or wrapped star)
-app.options('(.)', cors(corsOptions));   // ‘(.)’ works, '*' does not
+app.options('/(.)', cors(corsOptions));   // ‘(.)’ works, '*' does not
 
 
 
