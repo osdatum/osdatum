@@ -70,15 +70,6 @@ app.use("/api/auth/firebase", firebaseAuthRoutes);
 app.use("/api/subscription", subscriptionRoutes);
 
 
-// REMOVE TEMPORARY Endpoint to manually create purchase data in Firestore
-// REMOVE THIS IN PRODUCTION
-// app.get('/test/create-purchase/:userId/:gridId', async (req, res) => { ... }); // Removed endpoint
-
-// REMOVE Purchase grid endpoint (now in src/api/user.js)
-// app.post('/api/user/purchase/grid', authenticateToken, async (req, res) => { ... }); // Removed endpoint
-
-// REMOVE Get user's purchased grids (now in src/api/user.js via /access)
-// app.get('/api/user/purchased-grids', authenticateToken, async (req, res) => { ... }); // Removed endpoint
 
 // Error handling middleware
 // ...existing code...
