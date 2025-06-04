@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@layer base {
+  html{
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-weight: 400;
+  }
+}
+
+/* Memastikan semua pane leaflet tidak lebih tinggi dari navbar */
+.leaflet-pane,
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 10 !important;
+}
+
+/* Custom Scrollbar Styles */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
