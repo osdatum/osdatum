@@ -36,7 +36,7 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://osdatum-app.vercel.app'
+    'http://osdatum-app.vercel.app'
   ],
   credentials: true
 }));
